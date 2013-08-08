@@ -55,6 +55,15 @@ public class InvertedIndex {
 		}
 	}
 	
+	/**
+	 * Construct skip pointers and other optimising structures that allow for
+	 * quick retrieval. This only needs to be run once, after all documents are
+	 * added.
+	 */
+	public void optimise() {
+		
+	}
+	
 	public int getFrequency(String term) {
 		return frequencies.containsKey(term) ? frequencies.get(term) : 0;
 	}

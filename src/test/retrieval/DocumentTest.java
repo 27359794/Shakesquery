@@ -13,7 +13,7 @@ public class DocumentTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		doc = new Document("The quick brown Fox! 'Jumped' over... ...");
+		doc = new Document("The quick brown Fox! 'Jumped' over O'Reilly... ...");
 	}
 
 	@After
@@ -22,8 +22,8 @@ public class DocumentTest {
 	}
 
 	@Test
-	public void testContainsTerm() {
-		String terms[] = {"the", "quick", "brown", "fox", "jumped", "over"};
+	public void shouldGetDocumentContainsTerm() {
+		String terms[] = {"the", "quick", "brown", "fox", "jumped", "over", "oreilly"};
 		for (String term : terms) {
 			assertTrue(doc.containsTerm(term));
 		}
@@ -35,6 +35,7 @@ public class DocumentTest {
 		assertFalse(doc.containsTerm("Fox!"));
 		assertFalse(doc.containsTerm("'Jumped'"));
 		assertFalse(doc.containsTerm("Jumped"));
+		assertFalse(doc.containsTerm("o'reilly"));
 	}
 
 }

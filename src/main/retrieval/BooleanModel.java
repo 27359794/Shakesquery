@@ -10,6 +10,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
 
+import main.adt.list.Node;
+
 
 public class BooleanModel {
 	
@@ -21,16 +23,21 @@ public class BooleanModel {
 	
 	
 	public static void main(String[] args) throws Exception {
-		BooleanModel model = new BooleanModel();
+//		BooleanModel model = new BooleanModel();
 	}
 	
-	public BooleanModel() {
-		documents = new ArrayList<Document>();
+	public BooleanModel(ArrayList<Document> docsForModel) {
 		index = new InvertedIndex();
+		documents = new ArrayList<Document>();
 		
+		for (Document d : docsForModel) {
+			this.addDocument(d);
+		}
+		
+		index.optimise();
 	}
 	
-	public void addDocument(Document doc) {
+	protected void addDocument(Document doc) {
 		int docID = documents.size();
 		documents.add(doc);
 		
@@ -60,7 +67,7 @@ public class BooleanModel {
 	
 	protected ArrayList<Document> postingsListToDocs(PostingsList list) {
 		ArrayList<Document> docs = new ArrayList<Document>();
-		for (Integer id : list) {
+		for (Integer id : list.asArrayList()) {
 			docs.add(documents.get(id));
 		}
 		return docs;

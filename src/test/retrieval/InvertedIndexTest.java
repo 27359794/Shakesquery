@@ -34,7 +34,7 @@ public class InvertedIndexTest {
 	}
 
 	@Test
-	public void testGetPostingsListForTerm() {
+	public void shouldGetPostingsListForTerm() {
 		PostingsList results;
 		results = index.getPostingsListForTerm("to");
 		assertEquals(2, results.size());
@@ -43,7 +43,7 @@ public class InvertedIndexTest {
 	}
 	
 	@Test
-	public void testGetFrequency() {
+	public void shouldGetDocumentFrequencyOfTerm() {
 		assertEquals(2, index.getFrequency("to"));
 		assertEquals(2, index.getFrequency("i"));
 		assertEquals(1, index.getFrequency("went"));

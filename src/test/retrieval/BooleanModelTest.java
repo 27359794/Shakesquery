@@ -20,15 +20,16 @@ public class BooleanModelTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		model = new BooleanModel();
-		
 		doc1 = new Document("to be or not to be");
 		doc2 = new Document("i went to the market");
 		doc3 = new Document("i think therefore i be");
 		
-		model.addDocument(doc1);
-		model.addDocument(doc2);
-		model.addDocument(doc3);
+		ArrayList<Document> docs = new ArrayList<Document>();
+		docs.add(doc1);
+		docs.add(doc2);
+		docs.add(doc3);
+		
+		model = new BooleanModel(docs);
 	}
 
 	@After
@@ -38,7 +39,7 @@ public class BooleanModelTest {
 	}
 
 	@Test
-	public void testWordQuery() {
+	public void shouldQueryIndividualWords() {
 		ArrayList<Document> results;
 		
 		results = model.wordQuery("to");
@@ -65,7 +66,7 @@ public class BooleanModelTest {
 	}
 	
 	@Test
-	public void testDisjunctiveWordQuery() {
+	public void shouldPerformDisjunctiveQueries() {
 		ArrayList<Document> results;
 		
 		results = model.disjunctiveWordQuery(new String[] {"to"});

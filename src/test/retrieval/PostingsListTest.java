@@ -32,8 +32,7 @@ public class PostingsListTest {
 	}
 	
 	@Test
-	public void testSize() {
-		assertEquals(5, list.size());
+	public void shouldGetSize() {
 		list.add(100);
 		assertEquals(5, list.size());
 		list.add(1000);
@@ -41,7 +40,7 @@ public class PostingsListTest {
 	}
 	
 	@Test
-	public void testContains() {
+	public void shouldGetContainsStatus() {
 		assertTrue(list.contains(1));
 		assertTrue(list.contains(3));
 		assertTrue(list.contains(15));
@@ -54,7 +53,7 @@ public class PostingsListTest {
 	}
 	
 	@Test
-	public void testGetList() {
+	public void shouldGetPostingsListRepresentation() {
 		ArrayList<Integer> expected = new ArrayList<Integer>();
 		expected.add(1);
 		expected.add(3);
@@ -62,11 +61,11 @@ public class PostingsListTest {
 		expected.add(100);
 		expected.add(200);
 		
-		assertTrue(list.getList().equals(expected));		
+		assertTrue(list.asArrayList().equals(expected));		
 	}
 
 	@Test
-	public void testUnion() {
+	public void shouldMergePostingsLists() {
 		PostingsList other = new PostingsList("bar");
 		other.add(20);
 		other.add(3);
@@ -75,11 +74,30 @@ public class PostingsListTest {
 		other.add(300);
 		other.add(3000);
 		
+		assertTrue(other.contains(300));
+		assertTrue(other.contains(3000));
+		
 		list.mergeIn(other);
-		assertEquals(list.size(), 9);
+		assertEquals(9, list.size());
 		
 		// Make sure other wasn't changed in the union
 		assertEquals(6, other.size());
+	}
+	
+	@Test
+	public void shouldConvertToArrayList() {
+		
+		list.add(100);
+		list.add(15);
+		list.add(200);
+		list.add(1);
+		list.add(3);
+		list.add(100);
+		
+		Integer[] expected = {1, 3, 15, 100, 200};
+		Integer[] actual = new Integer[expected.length];
+		
+		assertArrayEquals(expected, list.asArrayList().toArray(actual));
 	}
 
 }
