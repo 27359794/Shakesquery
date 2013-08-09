@@ -1,4 +1,4 @@
-package main.datastructures.list;
+package datastructures.list;
 
 public class Node <V extends Comparable<V>> {
 	public Node<V> next;

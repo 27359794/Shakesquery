@@ -1,14 +1,12 @@
-package test;
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import test.datastructures.list.SinglyLinkedListTest;
-import test.retrieval.BooleanModelTest;
-import test.retrieval.DocumentTest;
-import test.retrieval.InvertedIndexTest;
-import test.retrieval.PostingsListTest;
+import datastructures.list.SinglyLinkedListTest;
+import retrieval.BooleanModelTest;
+import retrieval.DocumentTest;
+import retrieval.InvertedIndexTest;
+import retrieval.PostingsListTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({

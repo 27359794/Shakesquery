@@ -1,11 +1,11 @@
-package test.retrieval;
+package retrieval;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import main.retrieval.BooleanModel;
-import main.retrieval.Document;
+import retrieval.BooleanModel;
+import retrieval.Document;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,9 +17,9 @@ public class BooleanModelTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		doc1 = new Document("to be or not to be");
-		doc2 = new Document("i went to the market");
-		doc3 = new Document("i think therefore i be");
+		doc1 = new Document("bla", "to be or not to be");
+		doc2 = new Document("bla2", "i went to the market");
+		doc3 = new Document("bla3", "i think therefore i be");
 	}
 
 	@After

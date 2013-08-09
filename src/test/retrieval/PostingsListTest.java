@@ -1,10 +1,10 @@
-package test.retrieval;
+package retrieval;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import main.retrieval.PostingsList;
+import retrieval.PostingsList;
 
 import org.junit.After;
 import org.junit.Before;

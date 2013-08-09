@@ -1,9 +1,9 @@
-package test.retrieval;
+package retrieval;
 
 import static org.junit.Assert.*;
-import main.retrieval.Document;
-import main.retrieval.InvertedIndex;
-import main.retrieval.PostingsList;
+import retrieval.Document;
+import retrieval.InvertedIndex;
+import retrieval.PostingsList;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,9 +18,9 @@ public class InvertedIndexTest {
 	public void setUp() throws Exception {
 		index = new InvertedIndex();
 		
-		doc1 = new Document("to be or not to be");
-		doc2 = new Document("i went to the market");
-		doc3 = new Document("i think therefore i be");
+		doc1 = new Document("bla", "to be or not to be");
+		doc2 = new Document("bla2", "i went to the market");
+		doc3 = new Document("bla3", "i think therefore i be");
 		
 		index.indexDocument(doc1, 1337);
 		index.indexDocument(doc2, 96);

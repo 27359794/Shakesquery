@@ -1,4 +1,4 @@
-package main.datastructures.list;
+package datastructures.list;
 
 /**
  * A simple singly-linked list.

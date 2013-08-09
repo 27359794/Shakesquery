@@ -1,9 +1,9 @@
-package main.retrieval;
+package retrieval;
 
 import java.util.ArrayList;
 
-import main.datastructures.list.Node;
-import main.datastructures.list.SinglyLinkedList;
+import datastructures.list.Node;
+import datastructures.list.SinglyLinkedList;
 
 public class PostingsList {
 	
