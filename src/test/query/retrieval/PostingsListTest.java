@@ -1,10 +1,10 @@
-package retrieval;
+package query.retrieval;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import retrieval.PostingsList;
+import query.retrieval.PostingsList;
 
 import org.junit.After;
 import org.junit.Before;
@@ -146,8 +146,8 @@ public class PostingsListTest {
 		
 		PostingsList other = new PostingsList("i am empty");
 		list.intersectIn(other);
-		assertTrue(list.size() == 0);
-		assertTrue(other.size() == 0);
+		assertEquals(0, list.size());
+		assertEquals(0, other.size());
 	}
 	
 	@Test

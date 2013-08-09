@@ -1,12 +1,13 @@
-package datastructures.list;
+package query.datastructures.list;
 
 import static org.junit.Assert.*;
-import datastructures.list.Node;
-import datastructures.list.SinglyLinkedList;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import query.datastructures.list.Node;
+import query.datastructures.list.SinglyLinkedList;
 
 public class SinglyLinkedListTest {
 

@@ -1,8 +1,8 @@
-package retrieval;
+package query.retrieval;
 import java.io.File;
 import java.util.ArrayList;
 
-import utils.Utils;
+import query.utils.FileReading;
 
 
 public class BooleanModel {
@@ -19,7 +19,7 @@ public class BooleanModel {
 		for (File text : folder.listFiles()) {
 			// Identify the play by its filename for convenience
 			shakespeares.add(
-					new Document(text.getName(), Utils.readTextFile(text)));
+					new Document(text.getName(), FileReading.readTextFile(text)));
 		}
 		
 		BooleanModel model = new BooleanModel(shakespeares);

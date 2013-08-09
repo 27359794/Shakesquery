@@ -1,11 +1,11 @@
-package retrieval;
+package query.retrieval;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import retrieval.BooleanModel;
-import retrieval.Document;
+import query.retrieval.BooleanModel;
+import query.retrieval.Document;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,6 +34,13 @@ public class BooleanModelTest {
 		
 		BooleanModel model = new BooleanModel(docs);
 		return model;
+	}
+	
+	@Test
+	public void shouldExecuteMainWithoutIssues() throws Exception {
+		// main doesn't really do anything, so just run it to make sure there
+		// are no exceptions.
+		BooleanModel.main(new String[]{});
 	}
 
 	@Test

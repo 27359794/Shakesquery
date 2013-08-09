@@ -1,7 +1,7 @@
-package retrieval;
+package query.retrieval;
 
 import static org.junit.Assert.*;
-import retrieval.Document;
+import query.retrieval.Document;
 
 import org.junit.After;
 import org.junit.Before;

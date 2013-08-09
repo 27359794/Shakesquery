@@ -1,9 +1,9 @@
-package retrieval;
+package query.retrieval;
 
 import java.util.ArrayList;
 
-import datastructures.list.Node;
-import datastructures.list.SinglyLinkedList;
+import query.datastructures.list.Node;
+import query.datastructures.list.SinglyLinkedList;
 
 public class PostingsList {
 	
@@ -14,13 +14,6 @@ public class PostingsList {
 	public PostingsList(String term) {
 		this.term = term;
 		docIDs = new SinglyLinkedList<Integer>();
-	}
-	
-	/**
-	 * @return document IDs, in sorted order.
-	 */
-	public SinglyLinkedList<Integer> getList() {
-		return docIDs;
 	}
 	
 	/**

@@ -1,4 +1,4 @@
-package retrieval;
+package query.retrieval;
 
 import java.util.ArrayList;
 

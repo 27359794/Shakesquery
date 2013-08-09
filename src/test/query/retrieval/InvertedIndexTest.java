@@ -1,9 +1,9 @@
-package retrieval;
+package query.retrieval;
 
 import static org.junit.Assert.*;
-import retrieval.Document;
-import retrieval.InvertedIndex;
-import retrieval.PostingsList;
+import query.retrieval.Document;
+import query.retrieval.InvertedIndex;
+import query.retrieval.PostingsList;
 
 import org.junit.After;
 import org.junit.Before;

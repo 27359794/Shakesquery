@@ -1,4 +1,4 @@
-package datastructures.list;
+package query.datastructures.list;
 
 /**
  * A simple singly-linked list.
