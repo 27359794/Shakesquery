@@ -1,8 +1,8 @@
-package test.adt.list;
+package test.datastructures.list;
 
 import static org.junit.Assert.*;
-import main.adt.list.Node;
-import main.adt.list.SinglyLinkedList;
+import main.datastructures.list.Node;
+import main.datastructures.list.SinglyLinkedList;
 
 import org.junit.After;
 import org.junit.Before;

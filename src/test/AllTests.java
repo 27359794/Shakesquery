@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import test.adt.list.SinglyLinkedListTest;
+import test.datastructures.list.SinglyLinkedListTest;
 import test.retrieval.BooleanModelTest;
 import test.retrieval.DocumentTest;
 import test.retrieval.InvertedIndexTest;

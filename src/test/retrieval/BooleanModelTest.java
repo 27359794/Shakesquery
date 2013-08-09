@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
-import junit.framework.TestCase;
 import main.retrieval.BooleanModel;
 import main.retrieval.Document;
 
@@ -16,30 +15,30 @@ public class BooleanModelTest {
 
 	protected Document doc1, doc2, doc3;
 	
-	protected BooleanModel model;
-	
 	@Before
 	public void setUp() throws Exception {
 		doc1 = new Document("to be or not to be");
 		doc2 = new Document("i went to the market");
 		doc3 = new Document("i think therefore i be");
-		
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+	
+	protected BooleanModel getSampleModel() {
 		ArrayList<Document> docs = new ArrayList<Document>();
 		docs.add(doc1);
 		docs.add(doc2);
 		docs.add(doc3);
 		
-		model = new BooleanModel(docs);
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		model = null;
-		doc1 = doc2 = doc3 = null;
+		BooleanModel model = new BooleanModel(docs);
+		return model;
 	}
 
 	@Test
 	public void shouldQueryIndividualWords() {
+		BooleanModel model = getSampleModel();
 		ArrayList<Document> results;
 		
 		results = model.wordQuery("to");
@@ -67,6 +66,7 @@ public class BooleanModelTest {
 	
 	@Test
 	public void shouldPerformDisjunctiveQueries() {
+		BooleanModel model = getSampleModel();
 		ArrayList<Document> results;
 		
 		results = model.disjunctiveWordQuery(new String[] {"to"});
@@ -94,9 +94,47 @@ public class BooleanModelTest {
 		assertEquals(1, results.size());
 		assertTrue(results.contains(doc3));
 		
+		results = model.disjunctiveWordQuery(new String[] {"went", "market",
+														   "therefore"});
+		assertEquals(2, results.size());
+		assertTrue(results.contains(doc2));
+		assertTrue(results.contains(doc3));
+		
 		results = model.disjunctiveWordQuery(new String[] {"cat", "dog"});
 		assertEquals(0,  results.size());
-
+	}
+	
+	@Test
+	public void shouldPerformConjunctiveQueries() {
+		BooleanModel model = getSampleModel();
+		ArrayList<Document> results;
+		
+		results = model.conjunctiveWordQuery(new String[] {"to"});
+		assertEquals(2, results.size());
+		assertTrue(results.contains(doc1));
+		assertTrue(results.contains(doc2));
+		
+		results = model.conjunctiveWordQuery(new String[] {"i"});
+		assertEquals(2, results.size());
+		assertTrue(results.contains(doc2));
+		assertTrue(results.contains(doc3));
+		
+		results = model.conjunctiveWordQuery(new String[] {"i", "to"});
+		assertEquals(1, results.size());
+		assertTrue(results.contains(doc2));
+		
+		results = model.conjunctiveWordQuery(new String[] {"went", "think"});
+		assertEquals(0, results.size());
+		
+		results = model.conjunctiveWordQuery(new String[] {"therefore", "was"});
+		assertEquals(0, results.size());
+		
+		results = model.conjunctiveWordQuery(new String[] {"went", "market",
+														   "therefore"});
+		assertEquals(0, results.size());
+		
+		results = model.conjunctiveWordQuery(new String[] {"cat", "dog"});
+		assertEquals(0,  results.size());
 	}
 
 }

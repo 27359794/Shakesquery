@@ -2,8 +2,8 @@ package main.retrieval;
 
 import java.util.ArrayList;
 
-import main.adt.list.Node;
-import main.adt.list.SinglyLinkedList;
+import main.datastructures.list.Node;
+import main.datastructures.list.SinglyLinkedList;
 
 public class PostingsList {
 	
@@ -24,13 +24,13 @@ public class PostingsList {
 	}
 	
 	/**
-	 * In-place merges the other into this list. The final list is sorted and all elements
-	 * are unique.
+	 * In-place merges other into this list. The final list is sorted and all
+	 * elements are unique.
 	 * 
 	 * @param other The other postings list to merge into this one (disjunctive).
 	 * 				Pre-condition: its postingsList be in sorted order.
 	 */
-	public void mergeIn(PostingsList other) {
+	public void unionIn(PostingsList other) {
 		// Don't do anything if other has no elements
 		if (other.size() == 0) {
 			return;
@@ -42,21 +42,21 @@ public class PostingsList {
 				them.value.compareTo(meCur.value) == 0) {
 				// If them == meCur, advance it
 				them = them.next;
-			} else if ((meCur == this.getHeadNode() || meCur.value.compareTo(them.value) < 0) &&
-				(meNext == null || meNext.value.compareTo(them.value) > 0)) {
+			} else if ((meCur == this.getHeadNode() || 
+					    meCur.value.compareTo(them.value) < 0) &&
+					   (meNext == null ||
+					    meNext.value.compareTo(them.value) > 0)) {
 				// If (them is at the start or them >= meCur) and (them < meNext
 				// or there is no meNext), then insert here
 				Node<Integer> newNode = new Node<Integer>();
 				newNode.value = them.value;
 				meCur.next = newNode;
 				newNode.next = meNext;
-				// Note that meNext remains the same here.
-				Node<Integer> temp = newNode;
 				
+				// Advance all pointers forward by one
 				them = them.next;
 				meCur = newNode;
 				meNext = meCur.next;
-//				
 				
 				docIDs.size ++;
 			} else {
@@ -65,6 +65,43 @@ public class PostingsList {
 				meNext = meNext.next;
 			}	
 		}
+	}
+	
+	/**
+	 * In-place merges other into this list conjunctively, so that by the end,
+	 * this list is the intersection of itself and other.
+	 */
+	public void intersectIn(PostingsList other) {
+		Node<Integer> meCur = this.getHeadNode(), meNext = meCur.next;
+		Node<Integer> them = other.getHeadNode().next;
+		
+		// Note that we can terminate when *either* pointer reaches the end
+		while (them != null && meNext != null) {
+			if (meNext.value.equals(them.value)) {
+				// Keep meNext in the list, advance everything
+				meCur = meNext;
+				meNext = meCur.next;
+				them = them.next;
+			} else if (them.value.compareTo(meNext.value) > 0) {
+				// meNext pointer is behind, remove it and shift forward
+				meCur.next = meNext.next;
+				meCur = meNext;
+				meNext = meCur.next;
+				docIDs.size --;
+			} else {
+				// them pointer is behind, DON'T remove it but shift it forward
+				them = them.next;
+			}
+		}
+		
+		if (them == null) {
+			// Ignore every element after meCur, make meCur the new tail
+			while (meCur != null && meCur.next != null) {
+				meCur.next = meCur.next.next;
+				docIDs.size --;
+			}
+		}
+
 	}
 	
 	public int size() {

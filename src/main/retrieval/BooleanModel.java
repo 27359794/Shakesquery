@@ -1,16 +1,5 @@
 package main.retrieval;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeMap;
-
-import main.adt.list.Node;
 
 
 public class BooleanModel {
@@ -50,17 +39,23 @@ public class BooleanModel {
 	}
 	
 	public ArrayList<Document> disjunctiveWordQuery(String[] query) {
-		// TODO: A heuristic tells us that we should merge postings lists in
-		// sorted order (ascending) to minimise processing time
-//		TreeMap<Integer, String> sorted = new Tree<Integer, String>();
-//		for (String word : query) {
-//			sorted.put(index.getFrequency(word), word);
-//		}
-		
 		PostingsList intermediate = new PostingsList("");
 		for (String term : query) {
 			PostingsList cur = index.getPostingsListForTerm(term);
-			intermediate.mergeIn(cur);
+			intermediate.unionIn(cur);
+		}
+		return postingsListToDocs(intermediate);
+	}
+	
+	public ArrayList<Document> conjunctiveWordQuery(String[] query) {
+		// TODO: merge using heuristic -- frequency sort
+		
+		// Note that we can't start with an empty intermediate, since it would
+		// never grow after intersections.
+		PostingsList intermediate = index.getPostingsListForTerm(query[0]);
+		for (int i=1 ; i<query.length ; i++) {
+			PostingsList cur = index.getPostingsListForTerm(query[i]);
+			intermediate.intersectIn(cur);
 		}
 		return postingsListToDocs(intermediate);
 	}
