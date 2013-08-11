@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import query.datastructures.Posting;
 import query.retrieval.PostingsList;
 
 import org.junit.After;
@@ -25,7 +26,7 @@ public class PostingsListTest {
 	protected PostingsList constructList(Integer[] array) {
 		list = new PostingsList("my list");
 		for (Integer num : array) {
-			list.add(num);
+			list.add(num, 0);
 		}
 		return list;
 	}
@@ -34,19 +35,20 @@ public class PostingsListTest {
 		return constructList(new Integer[] {100, 3, 15, 1, 200, 100});
 	}
 	
-	protected void checkListValues(Integer[] expected, PostingsList pList) {
-		Integer[] actual = new Integer[expected.length];
-		pList.asArrayList().toArray(actual);
-		assertArrayEquals(expected, actual);
+	protected void checkListDocIDs(Integer[] expected, PostingsList pList) {
+		assertEquals(expected.length, pList.size());
+		for (Integer n : expected) {
+			assertTrue(pList.containsDoc(n));
+		}
 	}
 	
 	@Test
 	public void shouldGetSize() {
 		PostingsList list = getSampleList();
 		
-		list.add(100);
+		list.add(100, 0);
 		assertEquals(5, list.size());
-		list.add(1000);
+		list.add(1000, 0);
 		assertEquals(6, list.size());
 	}
 	
@@ -54,29 +56,33 @@ public class PostingsListTest {
 	public void shouldGetContainsStatus() {
 		PostingsList list = getSampleList();
 		
-		assertTrue(list.contains(1));
-		assertTrue(list.contains(3));
-		assertTrue(list.contains(15));
-		assertTrue(list.contains(100));
-		assertTrue(list.contains(200));
+		assertTrue(list.containsDoc(1));
+		assertTrue(list.containsDoc(3));
+		assertTrue(list.containsDoc(15));
+		assertTrue(list.containsDoc(100));
+		assertTrue(list.containsDoc(200));
 		
-		assertFalse(list.contains(2));
-		assertFalse(list.contains(20));
-		assertFalse(list.contains(300));
+		assertFalse(list.containsDoc(2));
+		assertFalse(list.containsDoc(20));
+		assertFalse(list.containsDoc(300));
 	}
 	
 	@Test
 	public void shouldGetPostingsListRepresentation() {
 		PostingsList list = getSampleList();
+		ArrayList<Posting> actual = list.asArrayList();
 		
-		ArrayList<Integer> expected = new ArrayList<Integer>();
-		expected.add(1);
-		expected.add(3);
-		expected.add(15);
-		expected.add(100);
-		expected.add(200);
+		ArrayList<Posting> expected = new ArrayList<Posting>();
+		expected.add(new Posting(1, 0));
+		expected.add(new Posting(3, 0));
+		expected.add(new Posting(15, 0));
+		expected.add(new Posting(100, 0));
+		expected.add(new Posting(200, 0));
 		
-		assertTrue(list.asArrayList().equals(expected));		
+		assertEquals(expected.size(), actual.size());
+		for (int i=0 ; i<expected.size() ; i++) {
+			assertEquals(expected.get(i).docID, actual.get(i).docID);
+		}
 	}
 
 	@Test
@@ -88,22 +94,22 @@ public class PostingsListTest {
 		list.unionIn(other);
 		
 		Integer[] expected = {1, 3, 15, 18, 20, 100, 200, 300, 3000}; 
-		checkListValues(expected, list);
+		checkListDocIDs(expected, list);
 
 		// Make sure other wasn't changed in the union		
 		Integer[] otherExpected = {3, 18, 20, 100, 300, 3000};
-		checkListValues(otherExpected, other);
+		checkListDocIDs(otherExpected, other);
 		
 		// Test some more complex cases
 		list = getSampleList();
 		
 		PostingsList other1 = constructList(new Integer[]{3, 0, 12, 200, 100});
 		list.unionIn(other1);
-		checkListValues(new Integer[]{0, 1, 3, 12, 15, 100, 200}, list);
+		checkListDocIDs(new Integer[]{0, 1, 3, 12, 15, 100, 200}, list);
 		
 		PostingsList other2 = constructList(new Integer[]{-1, 12, 15, 17});
 		list.unionIn(other2);
-		checkListValues(new Integer[]{-1, 0, 1, 3, 12, 15, 17, 100, 200}, list);
+		checkListDocIDs(new Integer[]{-1, 0, 1, 3, 12, 15, 17, 100, 200}, list);
 	}
 	
 	@Test
@@ -114,30 +120,30 @@ public class PostingsListTest {
 														 300, 3000});
 		list.intersectIn(other);
 		
-		checkListValues(new Integer[]{3, 100}, list);
+		checkListDocIDs(new Integer[]{3, 100}, list);
 		
 		// Make sure other wasn't changed in the intersection
 		Integer[] otherExpected = {3,18, 20, 100, 300, 3000};
-		checkListValues(otherExpected, other);
+		checkListDocIDs(otherExpected, other);
 		
 		// Test some more complex cases
 		list = getSampleList();
 		
 		PostingsList other1 = constructList(new Integer[]{3, 0, 12, 200, 100});
 		list.intersectIn(other1);
-		checkListValues(new Integer[]{3, 100, 200}, list);
+		checkListDocIDs(new Integer[]{3, 100, 200}, list);
 		
 		PostingsList other2 = constructList(new Integer[]{3, 200});
 		list.intersectIn(other2);
-		checkListValues(new Integer[]{3, 200}, list);
+		checkListDocIDs(new Integer[]{3, 200}, list);
 		
 		PostingsList other3 = constructList(new Integer[]{200});
 		list.intersectIn(other3);
-		checkListValues(new Integer[]{200}, list);
+		checkListDocIDs(new Integer[]{200}, list);
 		
 		PostingsList other4 = constructList(new Integer[]{});
 		list.intersectIn(other4);
-		checkListValues(new Integer[]{}, list);
+		checkListDocIDs(new Integer[]{}, list);
 	}
 		
 	@Test
@@ -157,7 +163,7 @@ public class PostingsListTest {
 		PostingsList other = new PostingsList("i am empty");
 		list.unionIn(other);
 		Integer[] expected = {1, 3, 15, 100, 200};
-		checkListValues(expected, list);
+		checkListDocIDs(expected, list);
 		assertTrue(other.size() == 0);
 	}
 	
@@ -165,15 +171,15 @@ public class PostingsListTest {
 	public void shouldConvertToArrayList() {
 		PostingsList list = getSampleList();
 		
-		list.add(100);
-		list.add(15);
-		list.add(200);
-		list.add(1);
-		list.add(3);
-		list.add(100);
+		list.add(100, 0);
+		list.add(15, 0);
+		list.add(200, 0);
+		list.add(1, 0);
+		list.add(3, 0);
+		list.add(100, 0);
 		
 		Integer[] expected = {1, 3, 15, 100, 200};
-		checkListValues(expected, list);
+		checkListDocIDs(expected, list);
 	}
 
 }

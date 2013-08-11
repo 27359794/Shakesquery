@@ -68,7 +68,7 @@ public class BooleanModelTest {
 		assertTrue(results.contains(doc3));
 		
 		results = model.wordQuery("cat");
-		assertEquals(0, results.size());	
+		assertEquals(0, results.size());
 	}
 	
 	@Test

@@ -24,11 +24,15 @@ public class InvertedIndex {
 	public void indexDocument(Document doc, int docID) {
 		HashSet<String> seenWords = new HashSet<String>();
 		
-		for (String term : doc.terms) {
+		for (int i=0 ; i<doc.terms.size() ; i++) {
+			String term = doc.terms.get(i);
+			// XXX: this is too simplistic. we must count multiple iterations
+			// of the same term in a doc.
 			if (!invIndex.containsKey(term)) {
+				// Postingslist must know position too
 				invIndex.put(term, new PostingsList(term));
 			}
-			invIndex.get(term).add(docID);
+			invIndex.get(term).add(docID, i);
 			
 			// Only count each term once per document for frequencies.
 			if (!seenWords.contains(term)) {

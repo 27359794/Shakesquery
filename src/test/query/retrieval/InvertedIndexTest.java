@@ -38,8 +38,8 @@ public class InvertedIndexTest {
 		PostingsList results;
 		results = index.getPostingsListForTerm("to");
 		assertEquals(2, results.size());
-		assertTrue(results.contains(1337));
-		assertTrue(results.contains(96));
+		assertTrue(results.containsDoc(1337));
+		assertTrue(results.containsDoc(96));
 	}
 	
 	@Test

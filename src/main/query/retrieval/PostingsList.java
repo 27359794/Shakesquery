@@ -2,18 +2,19 @@ package query.retrieval;
 
 import java.util.ArrayList;
 
+import query.datastructures.Posting;
 import query.datastructures.list.Node;
 import query.datastructures.list.SinglyLinkedList;
 
 public class PostingsList {
 	
 	public String term;
-	protected SinglyLinkedList<Integer> docIDs;
+	protected SinglyLinkedList<Posting> docIDs;
 	
 	
 	public PostingsList(String term) {
 		this.term = term;
-		docIDs = new SinglyLinkedList<Integer>();
+		docIDs = new SinglyLinkedList<Posting>();
 	}
 	
 	/**
@@ -28,8 +29,8 @@ public class PostingsList {
 		if (other.size() == 0) {
 			return;
 		}
-		Node<Integer> meCur = this.getHeadNode(), meNext = meCur.next;
-		Node<Integer> them = other.getHeadNode().next;
+		Node<Posting> meCur = this.getHeadNode(), meNext = meCur.next;
+		Node<Posting> them = other.getHeadNode().next;
 		while (them != null) {
 			if (meCur != this.getHeadNode() && 
 				them.value.compareTo(meCur.value) == 0) {
@@ -39,9 +40,10 @@ public class PostingsList {
 					    meCur.value.compareTo(them.value) < 0) &&
 					   (meNext == null ||
 					    meNext.value.compareTo(them.value) > 0)) {
+				
 				// If (them is at the start or them >= meCur) and (them < meNext
 				// or there is no meNext), then insert here
-				Node<Integer> newNode = new Node<Integer>();
+				Node<Posting> newNode = new Node<Posting>();
 				newNode.value = them.value;
 				meCur.next = newNode;
 				newNode.next = meNext;
@@ -65,8 +67,8 @@ public class PostingsList {
 	 * this list is the intersection of itself and other.
 	 */
 	public void intersectIn(PostingsList other) {
-		Node<Integer> meCur = this.getHeadNode(), meNext = meCur.next;
-		Node<Integer> them = other.getHeadNode().next;
+		Node<Posting> meCur = this.getHeadNode(), meNext = meCur.next;
+		Node<Posting> them = other.getHeadNode().next;
 		
 		// Note that we can terminate when *either* pointer reaches the end
 		while (them != null && meNext != null) {
@@ -101,9 +103,9 @@ public class PostingsList {
 		return docIDs.size;
 	}
 	
-	public ArrayList<Integer> asArrayList() {
-		ArrayList<Integer> result = new ArrayList<Integer>();
-		Node<Integer> cur = docIDs.head.next;
+	public ArrayList<Posting> asArrayList() {
+		ArrayList<Posting> result = new ArrayList<Posting>();
+		Node<Posting> cur = docIDs.head.next;
 		while (cur != null) {
 			result.add(cur.value);
 			cur = cur.next;
@@ -111,20 +113,28 @@ public class PostingsList {
 		return result;
 	}
 	 
-	public Node<Integer> getHeadNode() {
+	public Node<Posting> getHeadNode() {
 		return docIDs.head;
 	}
 	
-	public boolean contains(int docID) {
-		return docIDs.contains(docID);
+	public boolean containsDoc(int docID) {
+		Node<Posting> cur = docIDs.head.next;
+		while (cur != null) {
+			if (docID == cur.value.docID) {
+				return true;
+			}
+			cur = cur.next;
+		}
+		return false; 
 	}
 	
 	/**
 	 * Add a doc to the postings list, by its ID. Duplicates are ignored.
 	 */
-	public void add(int docID) {
-		if (!contains(docID)) {
-			docIDs.insertSorted(docID);
+	public void add(int docID, int pos) {
+		Posting p = new Posting(docID, pos);
+		if (!containsDoc(docID)) {
+			docIDs.insertSorted(p);
 		}
 	}
 }
